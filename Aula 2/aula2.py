@@ -12,9 +12,6 @@ vermelho = (255,0,0)
 retangulo = pygame.draw.rect(tela, vermelho, [200, 200, 150, 100],5 )
 
 
-
-
-
 rodando = True
 while rodando:
     for event in pygame.event.get():
