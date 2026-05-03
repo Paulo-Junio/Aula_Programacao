@@ -1,20 +1,3 @@
-# Atividade de Casa 2: Placar Dinâmico
-# Objetivo: Praticar a atualização de texto na tela com base em interações e colisões, 
-# reforçando o uso de Rects .
-
-# 1. Crie um jogo simples onde um personagem (controlado pelo teclado) pode "coletar" 
-# um item (outro retângulo ou imagem).
-
-# 2. Implemente um placar no canto superior da tela que exiba a pontuação atual. A 
-# pontuação deve começar em 0.
-
-# 3. Cada vez que o personagem colidir com o item (você pode usar 
-# pygame.Rect.colliderect() ), a pontuação deve aumentar em 10 pontos e o item deve 
-# reaparecer em uma nova posição aleatória.
-
-# 4. O texto do placar deve ser atualizado a cada coleta, sempre usando 
-# get_rect() para  garantir o posicionamento correto e centralizado (ou alinhado à direita/esquerda) na sua área.
-
 import pygame
 import random
 
@@ -28,9 +11,6 @@ largura = 600
 tela = pygame.display.set_mode((comprimento, largura))
 pygame.display.set_caption("Aula 5: Movimentos contínuos")
 
-# Fonte
-fonte = pygame.font.SysFont("Arial", 30)
-
 
 # Cores
 VERMELHO = (255,0,0)
@@ -43,17 +23,15 @@ BRANCO = (255,255,255)
 personagem_rect = pygame.Rect(300,250,30,30) #[300,250,75,75]
 obstaculo_rect = pygame.Rect(457,512,30,30)
 # Som
-som = pygame.mixer.Sound("Aula 5/sound_1.wav")
+som = pygame.mixer.Sound("sound_1.wav")
 
 # Valores de ambiente
 VELOCIDADE = 10
-placar = 0
 
 # Clock
+
 clock = pygame.time.Clock()
 FPS = 60
-
-
 # Loop principal
 rodando = True
 while rodando:
@@ -82,13 +60,12 @@ while rodando:
         personagem_rect.right = comprimento
     
     # Restrição Vertical
-    if personagem_rect.top < 50:
-        personagem_rect.top = 50
+    if personagem_rect.top < 0:
+        personagem_rect.top = 0
     if personagem_rect.bottom > largura:
         personagem_rect.bottom = largura
 
     if personagem_rect.colliderect(obstaculo_rect):
-        placar += 10
         som.play()
         obstaculo_rect.x = random.randint(0, comprimento - 30)
         obstaculo_rect.y = random.randint(30, largura - 30)
@@ -99,14 +76,7 @@ while rodando:
     tela.fill(BRANCO)
     pygame.draw.rect(tela, VERMELHO,personagem_rect)
     pygame.draw.rect(tela, AZUL,obstaculo_rect)
-    
-    # Blit do placar
-    texto = fonte.render(f"Pontuação: {placar}", True, PRETO)
-    texto_rect = texto.get_rect()
-    texto_rect.center = (comprimento//2, 20 )
-    tela.blit(texto, texto_rect)
 
-    pygame.draw.line(tela, VERDE, (0,50), (800,50),3)
 
     pygame.display.update()
     clock.tick(FPS)
